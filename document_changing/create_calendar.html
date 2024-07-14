@@ -1,0 +1,65 @@
+<DOCTYPE HTML>
+<html>
+    <head>
+        <style>
+            td, th {
+                border: 1px solid black;
+                padding: 3px;
+                text-align: center;
+            }
+            th {
+                font-weight: bold;
+                background-color: #E6E6E6;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div id="calendar"></div>
+
+        <script>
+            function createCalendar(elem) {
+                let currentDate = new Date();
+                let year = currentDate.getFullYear();
+                let mon = currentDate.getMonth();
+                let d = new Date(year, mon);
+
+                let table = '<table><tr><th>Пн</th><th>Вт</th><th>Ср</th><th>Чт</th><th>Пт</th><th>Сб</th><th>Вс</th></tr><tr>'
+                // пробелы для первого ряда с Пн до первого дня месяца
+                for (let i = 0; i < getDay(d); i++) {
+                    table += '<td></td>';
+                }
+                // ячейки с датами
+                while (d.getMonth() == mon) {
+                    table += '<td>' + d.getDate() + '</td>';
+                    if (getDay(d) % 7 == 6) {
+                    // вс, последний день - перенос строки
+                    table += '</tr><tr>';
+                    }
+                    d.setDate(d.getDate() + 1);
+                }
+                // дополнить таблицу пустыми ячейками, если нужно
+                if (getDay(d) != 0) {
+                    for (let i = getDay(d); i < 7; i++) {
+                        table += '<td></td>';
+                    }
+                }
+
+                // закрыть таблицу
+                table += '</tr></table>';
+
+                elem.innerHTML = table;
+            }
+
+                function getDay(date) {
+                    let day = date.getDay();
+                    if  (day == 0) day = 7;  // сделать Вс (0) последним днем
+                    return day - 1;
+                }
+
+                createCalendar(calendar);
+        </script>
+        
+    </body>
+</html>
+
